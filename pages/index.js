@@ -1,8 +1,19 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Link from "next/link"
+import {getSortedPostsData} from "../lib/posts"
 
-export default function Home() {
+export async function getStaticProps(){
+const allPostsData = getSortedPostsData()
+return{
+  props:{
+    allPostsData
+  }
+}
+}
+
+export default function Home({allPostsData}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,7 +24,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+         Learn <a href="https://nextjs.org">Next.js!</a>
         </h1>
 
         <p className={styles.description}>
@@ -49,7 +60,29 @@ export default function Home() {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
+          <h1 className="title">
+          Read{' '}
+          <Link  href="/posts/first-post">
+           <a>Go to First Post</a>
+          
+          </Link>
+            
+          </h1>
         </div>
+        <section >
+        <h2 >Blog</h2>
+        <ul >
+          {allPostsData.map(({ id, date, title }) => (
+            <li key={id}>
+              {title}
+              <br />
+              {id}
+              <br />
+              {date}
+            </li>
+          ))}
+        </ul>
+      </section>
       </main>
 
       <footer className={styles.footer}>
